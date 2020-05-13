@@ -64,7 +64,7 @@ func NewOrchestratorDeployment(cr *miqv1alpha1.ManageIQ) (*appsv1.Deployment, er
 			},
 			corev1.EnvVar{
 				Name:  "DATABASE_REGION",
-				Value: "0",
+				Value: dbRegionCode(cr),
 			},
 			corev1.EnvVar{
 				Name: "DATABASE_HOSTNAME",
@@ -203,4 +203,13 @@ func NewOrchestratorDeployment(cr *miqv1alpha1.ManageIQ) (*appsv1.Deployment, er
 	}
 
 	return deployment, nil
+}
+
+func dbRegionCode(cr *iminstallv1alpha1.IMInstall) string {
+	regionCode := "0"
+	if cr.Spec.DatabaseRegion != "" {
+		regionCode = cr.Spec.DatabaseRegion
+	}
+
+	return regionCode
 }
